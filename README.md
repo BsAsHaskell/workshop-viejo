@@ -8,7 +8,7 @@ hecho con [Scotty](https://github.com/scotty-web/scotty)
 
 ## Instalando GHC y Cabal
 GHC es el principal compilador de Haskell y Cabal
-la herramienta de desarrollo de librerias y programas.
+la herramienta de desarrollo de librerías y programas.
 
 Para el los Workshops nos parece apropiado que todos respeten estas versiones:
 
@@ -18,7 +18,7 @@ Para el los Workshops nos parece apropiado que todos respeten estas versiones:
 Instalar ambos es relativamente simple y como hacerlo lo explica muy bien
 el nuevo sitio oficial: [http://www.haskell.org/downloads](http://www.haskell.org/downloads)
 
-## Compilando el projecto
+## Compilando el proyecto
 Despues de clonarlo
 
 ```bash
