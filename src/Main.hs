@@ -25,7 +25,7 @@ main = scotty 3000 $ do
             Right (_, vals) -> do
                 liftIO $ print $ V.head vals
                 let l = V.length vals
-                html $ "ok: " <> (T.pack . show) l <> " rows"
+                html $ "ok: " <> (T.pack . show) l <> " rows\n"
 
 getCSV :: String -> IO (Either String (Header, V.Vector Episode))
 getCSV name = do
