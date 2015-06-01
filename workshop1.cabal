@@ -16,8 +16,8 @@ executable workshop1
   default-language:    Haskell2010
   build-depends:       base >=4.7 && <5
                      , filepath
+                     , text
                      , transformers
-                     , aeson
                      , cassava
                      , bytestring
                      , vector

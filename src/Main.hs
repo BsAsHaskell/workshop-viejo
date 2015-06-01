@@ -1,13 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Data.Csv               (HasHeader(..), decode)
-import Data.ByteString.Lazy   as B
-import Data.Vector            as V (Vector(..), take)
-import Data.Aeson             (object, (.=))
-import System.FilePath        ((</>))
-import Web.Scotty
-import Control.Monad.IO.Class
+import qualified Data.ByteString.Lazy   as B
+import qualified Data.Vector            as V
+import qualified Data.Text.Lazy         as T
+import           Data.Csv               (HasHeader(..), decode)
+import           System.FilePath        ((</>))
+import           Web.Scotty
+import           Control.Monad.IO.Class
+import           Data.Monoid
 
 main :: IO ()
 main = scotty 3000 $ do
@@ -18,12 +19,13 @@ main = scotty 3000 $ do
     get "/episodes/" $ do
         csv <- liftIO $ getCSV "episode"
         case csv of
-            Left err -> json $ object ["error" .= err]
+            Left err -> html $ "error: " <> T.pack err
             Right vals -> do
-                liftIO $ print $ V.take 10 vals
-                json $ object ["ok" .= ("yes" :: String)]
+                liftIO $ print $ V.head vals
+                let l = V.length vals
+                html $ "ok: " <> (T.pack . show) l <> " rows"
 
-getCSV :: String -> IO (Either String (Vector (Vector ByteString)))
+getCSV :: String -> IO (Either String (V.Vector [B.ByteString]))
 getCSV name = do
     f <- B.readFile $ "csvs/" </> name ++ ".csv"
     return $ decode HasHeader f
