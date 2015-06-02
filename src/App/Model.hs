@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-
 module App.Model where
 
 import Data.Csv
@@ -29,7 +28,7 @@ data Utterance = Utterance {
     utteranceId :: Int
   , utteranceEpisode :: Int
   , utteranceNumber :: Int
-  , utteranceSpeaker :: Int
+  , utteranceSpeaker :: String
   } deriving Show
 
 instance FromNamedRecord Utterance where
