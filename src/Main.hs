@@ -25,20 +25,11 @@ main = scotty 3000 $ do
                 let l = V.length vals
                 html $ "ok: " <> (T.pack . show) l <> " rows\n"
 
-    get "/utterances/" $ do
-        csv <- liftIO $ (getCSV "utterance" :: IO (Data Utterance))
+    get "/episodes/:id" $ do
+        csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
+        id' <- param "id"
         case csv of
             Error err -> html $ "error: " <> T.pack err
             Data vals -> do
-                liftIO $ print $ V.head vals
-                let l = V.length vals
-                html $ "ok: " <> (T.pack . show) l <> " rows\n"
-
-    get "/sentences/" $ do
-        csv <- liftIO $ (getCSV "sentence" :: IO (Data Sentence))
-        case csv of
-            Error err -> html $ "error: " <> T.pack err
-            Data vals -> do
-                liftIO $ print $ V.head vals
-                let l = V.length vals
-                html $ "ok: " <> (T.pack . show) l <> " rows\n"
+                let l = V.find (\x -> episodeId x == id') vals
+                html $ "ok: " <> (T.pack . show) l <> "\n"
