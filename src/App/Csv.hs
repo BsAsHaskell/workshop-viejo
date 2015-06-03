@@ -5,11 +5,14 @@ module App.Csv (
   , Data(..)
   ) where
 
+import           Control.Applicative
 import           Control.Exception
 import           Data.Csv
 import           System.FilePath      ((</>))
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Vector          as V
+
+import           App.Model
 
 data Data a =
     Data (V.Vector a)
@@ -25,3 +28,27 @@ getCSV name = do
         Right f -> case decodeByName f of
                     Left err -> return $ Error err
                     Right (_, csv) -> return $ Data csv
+
+instance FromNamedRecord Episode where
+    parseNamedRecord m = Episode <$>
+        m .: "id" <*>
+        m .: "season_number" <*>
+        m .: "episode_number" <*>
+        m .: "title" <*>
+        m .: "the_date" <*>
+        m .: "writer" <*>
+        m .: "director"
+
+instance FromNamedRecord Utterance where
+    parseNamedRecord m = Utterance <$>
+        m .: "id" <*>
+        m .: "episode_id" <*>
+        m .: "utterance_number" <*>
+        m .: "speaker"
+
+instance FromNamedRecord Sentence where
+    parseNamedRecord m = Sentence <$>
+        m .: "id" <*>
+        m .: "utterance_id" <*>
+        m .: "sentence_number" <*>
+        m .: "text"
