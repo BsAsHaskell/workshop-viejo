@@ -2,7 +2,6 @@
 module Main where
 
 import qualified Data.Vector            as V
-import qualified Data.Text.Lazy         as T
 import           Web.Scotty
 import           Control.Applicative
 import           Control.Monad.IO.Class
@@ -11,6 +10,7 @@ import           Data.Monoid
 import           App.Model
 import           App.Csv
 import           App.Join
+import           App.Json
 
 main :: IO ()
 main = scotty 3000 $ do
@@ -21,19 +21,18 @@ main = scotty 3000 $ do
     get "/episodes/" $ do
         csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
         case csv of
-            Left err -> html $ "error: " <> T.pack err
+            Left err -> json $ jsonError err
             Right vals -> do
-                let l = V.length vals
-                html $ "ok: " <> (T.pack . show) l <> " rows\n"
+                json $ vals
 
     get "/episodes/:id" $ do
         csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
         id' <- param "id"
         case csv of
-            Left err -> html $ "error: " <> T.pack err
+            Left err -> json $ jsonError err
             Right vals -> do
                 let l = V.find (\x -> episodeId x == id') vals
-                html $ "ok: " <> (T.pack . show) l <> "\n"
+                json $ l
 
     get "/speech/:speaker" $ do
         sentences <- liftIO $ (getCSV "sentence" :: IO (Data Sentence))
@@ -41,9 +40,9 @@ main = scotty 3000 $ do
 
         spk' <- param "speaker"
         case (,) <$> sentences <*> utterances of
-            Left err -> html $ "error: " <> T.pack err
+            Left err -> json $ jsonError err
             Right (ss, us) -> do
                 let us' = V.filter (\u -> utteranceSpeaker u == spk') us
                 let speech = speechJoin ss us'
 
-                html $ "ok: " <> (T.pack . show) speech <> "\n"
+                json $ speech

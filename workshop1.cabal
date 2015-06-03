@@ -22,4 +22,5 @@ executable workshop1
                      , cassava
                      , bytestring
                      , vector
+                     , aeson
                      , scotty
