@@ -7,6 +7,8 @@ import qualified Data.IntMap.Lazy as M
 import qualified Data.Vector      as V
 import           App.Model
 
+-- | Asocia un Vector de 'Utterance' y uno de 'Sentence'
+-- generando un mapa del segundo e iterando por el primero.
 speechJoin :: V.Vector Sentence -> V.Vector Utterance -> [Speech]
 speechJoin ss us = V.foldr' join [] us
   where
