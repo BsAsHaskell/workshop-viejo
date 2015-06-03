@@ -24,3 +24,8 @@ data Sentence = Sentence {
   , sentenceNumber :: Int
   , sentenceText :: String
   } deriving Show
+
+data Speech = Speech {
+    speechUtterance :: Utterance
+  , speechSentence :: Sentence
+  } deriving Show

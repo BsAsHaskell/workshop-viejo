@@ -4,6 +4,7 @@ module Main where
 import qualified Data.Vector            as V
 import qualified Data.Text.Lazy         as T
 import           Web.Scotty
+import           Control.Applicative
 import           Control.Monad.IO.Class
 import           Data.Monoid
 
@@ -33,3 +34,14 @@ main = scotty 3000 $ do
             Right vals -> do
                 let l = V.find (\x -> episodeId x == id') vals
                 html $ "ok: " <> (T.pack . show) l <> "\n"
+
+    get "/sentences/:speaker" $ do
+        sentences <- liftIO $ (getCSV "sentence" :: IO (Data Sentence))
+        utterances <- liftIO $ (getCSV "utterance" :: IO (Data Utterance))
+
+        spk' <- param "speaker"
+        case (,) <$> sentences <*> utterances of
+            Error err -> html $ "error: " <> T.pack err
+            Data (s, u) -> do
+                let u' = V.filter (\x -> utteranceSpeaker x == spk') u
+                html $ "ok: " <> (T.pack . show) u' <> "\n"
