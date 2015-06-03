@@ -22,7 +22,6 @@ main = scotty 3000 $ do
         case csv of
             Left err -> html $ "error: " <> T.pack err
             Right vals -> do
-                liftIO $ print $ V.head vals
                 let l = V.length vals
                 html $ "ok: " <> (T.pack . show) l <> " rows\n"
 
@@ -41,7 +40,7 @@ main = scotty 3000 $ do
 
         spk' <- param "speaker"
         case (,) <$> sentences <*> utterances of
-            Error err -> html $ "error: " <> T.pack err
-            Data (s, u) -> do
+            Left err -> html $ "error: " <> T.pack err
+            Right (s, u) -> do
                 let u' = V.filter (\x -> utteranceSpeaker x == spk') u
                 html $ "ok: " <> (T.pack . show) u' <> "\n"
