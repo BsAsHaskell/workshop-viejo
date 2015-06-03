@@ -34,13 +34,19 @@ main = scotty 3000 $ do
                 let l = V.find (\x -> episodeId x == id') vals
                 html $ "ok: " <> (T.pack . show) l <> "\n"
 
-    get "/sentences/:speaker" $ do
+    get "/speech/:speaker" $ do
         sentences <- liftIO $ (getCSV "sentence" :: IO (Data Sentence))
         utterances <- liftIO $ (getCSV "utterance" :: IO (Data Utterance))
 
         spk' <- param "speaker"
         case (,) <$> sentences <*> utterances of
             Left err -> html $ "error: " <> T.pack err
-            Right (s, u) -> do
-                let u' = V.filter (\x -> utteranceSpeaker x == spk') u
-                html $ "ok: " <> (T.pack . show) u' <> "\n"
+            Right (ss, us) -> do
+                let findSentece uid = case V.find (\s -> sentenceUtterance s == uid) ss of
+                                        Just v -> v
+                                        Nothing -> error "welp"
+                let join u l = Speech u (findSentece $ utteranceId u) : l
+                let us' = V.filter (\u -> utteranceSpeaker u == spk') us
+                let speech = V.foldr' join [] us'
+
+                html $ "ok: " <> (T.pack . show) speech <> "\n"
