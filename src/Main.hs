@@ -10,6 +10,7 @@ import           Data.Monoid
 
 import           App.Model
 import           App.Csv
+import           App.Join
 
 main :: IO ()
 main = scotty 3000 $ do
@@ -42,11 +43,7 @@ main = scotty 3000 $ do
         case (,) <$> sentences <*> utterances of
             Left err -> html $ "error: " <> T.pack err
             Right (ss, us) -> do
-                let findSentece uid = case V.find (\s -> sentenceUtterance s == uid) ss of
-                                        Just v -> v
-                                        Nothing -> error "welp"
-                let join u l = Speech u (findSentece $ utteranceId u) : l
                 let us' = V.filter (\u -> utteranceSpeaker u == spk') us
-                let speech = V.foldr' join [] us'
+                let speech = speechJoin ss us'
 
                 html $ "ok: " <> (T.pack . show) speech <> "\n"
