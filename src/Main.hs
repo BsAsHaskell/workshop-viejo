@@ -19,8 +19,8 @@ main = scotty 3000 $ do
     get "/episodes/" $ do
         csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
         case csv of
-            Error err -> html $ "error: " <> T.pack err
-            Data vals -> do
+            Left err -> html $ "error: " <> T.pack err
+            Right vals -> do
                 liftIO $ print $ V.head vals
                 let l = V.length vals
                 html $ "ok: " <> (T.pack . show) l <> " rows\n"
@@ -29,7 +29,7 @@ main = scotty 3000 $ do
         csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
         id' <- param "id"
         case csv of
-            Error err -> html $ "error: " <> T.pack err
-            Data vals -> do
+            Left err -> html $ "error: " <> T.pack err
+            Right vals -> do
                 let l = V.find (\x -> episodeId x == id') vals
                 html $ "ok: " <> (T.pack . show) l <> "\n"

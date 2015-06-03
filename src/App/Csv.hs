@@ -14,20 +14,17 @@ import qualified Data.Vector          as V
 
 import           App.Model
 
-data Data a =
-    Data (V.Vector a)
-  | Error String
-  deriving Show
+type Data a = Either String (V.Vector a)
 
 getCSV :: FromNamedRecord a => String -> IO (Data a)
 getCSV name = do
     f <- try . B.readFile $ "csvs/" </> name ++ ".csv"
 
     case f of
-        Left (_ :: IOException) -> return . Error $ "IO Error"
+        Left (_ :: IOException) -> return . Left $ "IO Error"
         Right f -> case decodeByName f of
-                    Left err -> return $ Error err
-                    Right (_, csv) -> return $ Data csv
+                    Left err -> return $ Left err
+                    Right (_, csv) -> return $ Right csv
 
 instance FromNamedRecord Episode where
     parseNamedRecord m = Episode <$>
