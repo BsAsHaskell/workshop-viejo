@@ -26,7 +26,7 @@ main = scotty 3000 $ do
                 json $ vals
 
     get "/episodes/:id" $ do
-        csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
+        csv <- liftIO $ getCSV "episode"
         id' <- param "id"
         case csv of
             Left err -> json $ jsonError err
@@ -35,8 +35,8 @@ main = scotty 3000 $ do
                 json $ l
 
     get "/speech/:speaker" $ do
-        sentences <- liftIO $ (getCSV "sentence" :: IO (Data Sentence))
-        utterances <- liftIO $ (getCSV "utterance" :: IO (Data Utterance))
+        sentences <- liftIO $ getCSV "sentence"
+        utterances <- liftIO $ getCSV "utterance"
 
         spk' <- param "speaker"
         case (,) <$> sentences <*> utterances of
@@ -46,3 +46,17 @@ main = scotty 3000 $ do
                 let speech = speechJoin ss us'
 
                 json $ speech
+
+    get "/wordfreq/:speaker" $ do
+        sentences <- liftIO $ getCSV "sentence"
+        utterances <- liftIO $ getCSV "utterance"
+
+        spk' <- param "speaker"
+        case (,) <$> sentences <*> utterances of
+            Left err -> json $ jsonError err
+            Right (ss, us) -> do
+                let us' = V.filter (\u -> utteranceSpeaker u == spk') us
+                let speech = speechJoin ss us'
+                let word_freqs = wordFreq speech
+
+                json $ word_freqs
