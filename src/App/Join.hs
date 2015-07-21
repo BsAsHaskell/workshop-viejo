@@ -4,9 +4,9 @@ module App.Join (
   , wordFreq
   ) where
 
-import qualified Data.Map.Strict  as S
-import qualified Data.IntMap.Lazy as M
-import qualified Data.Vector      as V
+import qualified Data.Map.Strict     as S
+import qualified Data.IntMap.Lazy    as M
+import qualified Data.Vector         as V
 import           Data.List
 import           Data.Char
 

@@ -3,6 +3,7 @@
 module App.Csv (
     getCSV
   , Data(..)
+  , (</>)
   ) where
 
 import           Control.Applicative

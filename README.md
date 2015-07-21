@@ -6,7 +6,10 @@ Este repositorio es para el 1er Workshop del
 y consta de un simple servidor web que devuelve JSON
 hecho con [Scotty](https://github.com/scotty-web/scotty)
 
-## Instalando GHC y Cabal
+## Forma manual
+
+### Instalando GHC y Cabal
+
 GHC es el principal compilador de Haskell y Cabal
 la herramienta de desarrollo de librerías y programas.
 
@@ -18,8 +21,7 @@ Para el los Workshops nos parece apropiado que todos respeten estas versiones:
 Instalar ambos es relativamente simple y como hacerlo lo explica muy bien
 el nuevo sitio oficial: [http://www.haskell.org/downloads](http://www.haskell.org/downloads)
 
-## Compilando el proyecto
-Despues de clonarlo
+### Compilando
 
 ```bash
 git clone https://github.com/BsAsHaskell/workshop-1
@@ -36,10 +38,11 @@ cabal sandbox init
 Ahora hacemos la instalación de las dependencias con
 
 ```bash
+sudo apt-get install zlib1g-dev
 cabal install --only-dependencies
 ```
 
-y nos vamos a tomar un café, esto puede tomar un rato largo.
+### Corriendo
 
 Si todo salió bien, hacemos:
 
@@ -50,6 +53,22 @@ cabal run
 que compila el binario y lo corre, y listo!
 
 ```bash
-curl localhost:3000
-> Hello World!
+firefox localhost:3000
+```
+
+## Vagrant Way
+
+```bash
+vagrant up
+vagrant ssh
+cd /vagrant
+./deploy.sh
+echo :D
+cabal run
+```
+
+y en el host:
+
+```bash
+firefox 192.168.50.10:3000
 ```
