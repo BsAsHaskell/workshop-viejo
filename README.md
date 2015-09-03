@@ -1,74 +1,49 @@
 Workshop 1 - Servidor Rest con Scotty
 =====================================
 
-Este repositorio es para el 1er Workshop del
-[Buenos Aires Haskell Meetup](http://www.meetup.com/Buenos-Aires-Haskell-Meetup/)
+Este repositorio es para el 1er Workshop de
+[BAHM](http://www.meetup.com/Buenos-Aires-Haskell-Meetup/)
 y consta de un simple servidor web que devuelve JSON
 hecho con [Scotty](https://github.com/scotty-web/scotty)
 
-## Forma manual
+## Instalando GHC y Stack
 
-### Instalando GHC y Cabal
+GHC es el principal compilador de Haskell y Stack la nueva build tool.
 
-GHC es el principal compilador de Haskell y Cabal
-la herramienta de desarrollo de librerías y programas.
 
-Para el los Workshops nos parece apropiado que todos respeten estas versiones:
+Instalar GHC es relativamente simple y como hacerlo lo explica muy bien
+el sitio oficial: [http://www.haskell.org/downloads](http://www.haskell.org/downloads).
 
-* ghc --version >= 7.8.1
-* cabal --version >= 1.20
+Stack es bastante automático también, lo pueden encontrar [acá](https://github.com/commercialhaskell/stack).
 
-Instalar ambos es relativamente simple y como hacerlo lo explica muy bien
-el nuevo sitio oficial: [http://www.haskell.org/downloads](http://www.haskell.org/downloads)
+## Compilando
 
-### Compilando
+Clonamos el repo
 
 ```bash
-git clone https://github.com/BsAsHaskell/workshop-1
-cd workshop-1
+$ git clone https://github.com/BsAsHaskell/workshop-1
+$ cd workshop-1
 ```
 
-tenemos que crear una *sandbox*, un tipo de contenedor estilo
-*virtualenv* de python o como la carpeta *node_modules* de npm:
+y dejamos que `stack` haga su magia:
 
 ```bash
-cabal sandbox init
+$ stack build
 ```
 
-Ahora hacemos la instalación de las dependencias con
+Esto, en teoría, baja las dependencias isoladamente y si no encuentra GHC
+pide que corramos `stack setup` que se encarga de hacerlo.
 
-```bash
-sudo apt-get install zlib1g-dev
-cabal install --only-dependencies
-```
-
-### Corriendo
+## Corriendo
 
 Si todo salió bien, hacemos:
 
 ```bash
-cabal run
+.stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/workshop1
 ```
-
-que compila el binario y lo corre, y listo!
+y listo!
 
 ```bash
-firefox localhost:3000
-```
-
-## Vagrant Way
-
-```bash
-vagrant up
-vagrant ssh
-cd /vagrant
-./deploy.sh
-echo :D
-cabal run
-```
-
-y en el host:
-
-```bash
-firefox 192.168.50.10:3000
+curl localhost:3000/episodes/
+curl localhost:3000/episodes/1
 ```

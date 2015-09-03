@@ -20,10 +20,6 @@ main = scotty 3000 $ do
 
     middleware logStdoutDev
 
-    get "/" $ do
-        f <- liftIO $ T.readFile $ "web" </> "index.html"
-        html f
-
     get "/episodes/" $ do
         csv <- liftIO $ (getCSV "episode" :: IO (Data Episode))
         case csv of
