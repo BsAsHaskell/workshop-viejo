@@ -1,13 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import qualified Data.Text.Lazy.IO      as T
 import qualified Data.Vector            as V
-import qualified Data.Map.Strict        as S
 import           Web.Scotty
-import           Control.Applicative
 import           Control.Monad.IO.Class
-import           Data.Monoid
 
 import           Network.Wai.Middleware.RequestLogger
 

@@ -2,7 +2,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module App.Json where
 
-import           Control.Applicative
 import           Data.Aeson
 import qualified Data.Text.Lazy      as T
 

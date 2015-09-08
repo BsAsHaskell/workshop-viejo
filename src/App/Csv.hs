@@ -2,7 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module App.Csv (
     getCSV
-  , Data(..)
+  , Data
   , (</>)
   ) where
 
@@ -23,7 +23,7 @@ getCSV name = do
 
     case f of
         Left (_ :: IOException) -> return . Left $ "IO Error"
-        Right f -> case decodeByName f of
+        Right f' -> case decodeByName f' of
                     Left err -> return $ Left err
                     Right (_, csv) -> return $ Right csv
 
