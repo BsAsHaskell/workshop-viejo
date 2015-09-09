@@ -11,8 +11,7 @@ hecho con [Scotty](https://github.com/scotty-web/scotty)
 GHC es el principal compilador de Haskell y Stack la nueva build tool.
 
 
-Instalar GHC es relativamente simple y como hacerlo lo explica muy bien
-el sitio oficial: [http://www.haskell.org/downloads](http://www.haskell.org/downloads).
+Instalar GHC system level ahora es opcional, porque `stack` lo hace solo y por version, pero no viene mal. El sitio oficial tiene los pasos a seguir (cuidado, los links son los de la sección `Compiler and base libraries`, no recomiendo instalar la Haskell Platform): https://www.haskell.org/downloads.
 
 Stack es bastante automático también, lo pueden encontrar [acá](https://github.com/commercialhaskell/stack).
 
