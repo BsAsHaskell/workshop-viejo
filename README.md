@@ -38,7 +38,7 @@ pide que corramos `stack setup` que se encarga de hacerlo.
 Si todo salió bien, hacemos:
 
 ```bash
-.stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/workshop1
+./.stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/workshop1
 ```
 y listo!
 
